@@ -59,8 +59,11 @@ path_import = '/Users/ppx/Downloads/test_fraud/'
 data_file = 'listen-20131115.log'
 
 ### EXPORT
-path_export = '/Users/ppx/Desktop/BP/data-science-script/exemple/result/'
-result_file = 'the_result_file.csv'
+path_export = '/Users/ppx/Desktop/deezer/'
+result_file_naif = 'naive_result.csv'
+result_file_log = 'with_log_result.csv'
+result_file_user_id = 'with_user_id_result.csv'
+result_file_ip = 'with_ip_result.csv'
 
 ### PONCTUAL 
 action_made = - 1
@@ -258,7 +261,7 @@ def detection_fake(df_, print_mode = True, seuils = [50,100,200],var = 'ip'):
             labels = ['no_worry','no_reason','with_reason']
             values = [no_worry,no_reason,with_reason]
             plt.pie(values, labels = labels)###, filename='basic_pie_chart')
-            plt.title(var + 'a risque avec un seuil fixé à ' + str(warning) )
+            plt.title(var + ' à risque avec un seuil fixé à ' + str(warning) )
             plt.show()
             plt.close()
     return result 
@@ -318,6 +321,10 @@ first_data['ip'] = first_data['ip'].apply(lambda x: turn_ip_into_integer(x)) ###
 first_result = first_data.groupby(['artist_id']).count()[['timestamp']].rename(columns = {'timestamp':'count'}).sort_values(by = 'count',ascending = False)[:10]
 first_result.plot(kind = 'bar', title = 'premier classement naif')
 plt.figure()
+
+### export CSV
+first_result.to_csv(path_export + result_file_naif)
+
 
 first_data.groupby(['user_id']) ### on regroupe par user_id pour faciliter les prochains calculs
 every_user_id = first_data.user_id.unique() ### on liste les user_id
@@ -509,6 +516,7 @@ result_by_log = cleaned_data.groupby('artist_id')['timestamp'].nunique().sort_va
 result_by_log.rename(columns = {'timestamp':'nombre de log relatifs à l_artiste'})
 result_by_log.plot(kind = 'bar', title = 'TOP 10 obtenu a partir des logs')
 
+
 #|
 #|
 #|
@@ -517,6 +525,16 @@ result_by_log.plot(kind = 'bar', title = 'TOP 10 obtenu a partir des logs')
 """
 RESULT EXPORT :
 """
+
+
+### le séparateur dans les csv est ","
+result_by_user_id = pd.DataFrame(result_by_user_id,columns = ['user_id'])
+result_by_ip = pd.DataFrame(result_by_ip,columns = ['ip'])
+result_by_log = pd.DataFrame(result_by_log,columns = ['ip'])
+
+result_by_user_id.to_csv(path_export + result_file_user_id)
+result_by_ip.to_csv(path_export + result_file_ip)
+result_by_log.to_csv(path_export + result_file_log)
 
 #-------------------------------------------------------------------
 #-------------------------------------------------------------------
@@ -540,7 +558,7 @@ del line
 del criterion
 
 ### To run the code :
-### runfile('/Users/ppx/deezer.py', wdir='/Users/ppx')
+### runfile('/Users/ppx/Desktop/deezer/deezer.py', wdir='/Users/ppx/Desktop/deezer')
 
 #-------------------------------------------------------------------
 #-------------------------------------------------------------------
