@@ -4,19 +4,19 @@ The purpose of this README is to explain the analytic process and the chosen sol
 ## Process
 First I have tried to understand the data set in order to eliminate the unuseful data.
 I have concluded that the **timespan** and the **song_id** wouldn't be relevant for this analysis.
-Then I have searched for extreme values that were obviously related to hacking. 
+Then I have searched for extreme values that were obviously related to fraud. 
 In order to have an idea on user behavior, I have plotted some histograms.
 
-Then I had to define the boundaries of hacking. 
+Then I had to define the boundaries of fraud. 
 I have spent some time on the Internet to know how much regular people listen to music every day.
 I have considered that a song lasts an average of _3 min_.
 And I have considered that spending more than 10 hours a day on Deezer is (really) suspicious.
 As a consequence, I have settled the upper bound of regular use of Deezer at 200 songs a day _(this boundary can be determined more properly)_ .
 
 If a user\_id (or an ip\_adress) occurs more than 200 times, it is considered as suspicious.
-But then I have to find the purpose of the hack. So I check if it is related to the same artist\_id or provider\_id more than 200 times. If it is, the user\_id (or the ip\adress) is considered as hacked.
+But then I have to find the purpose of the fraud. So I check if it is related to the same artist\_id or provider\_id more than 200 times. If it is, the user\_id (or the ip\adress) is considered as fraudulent.
 
-Then I clean the data set of all the logs related to a considered-as-hacked user\_id or ip\adress.
+Then I clean the data set of all the logs related to a considered-as-fraudulent user\_id or ip\adress.
 
 _Remark : As a consequence, for a given user\_id, I am not able to separate the **clean** listens to the fraudulent ones_
 
